@@ -18,6 +18,13 @@ router.get('/profile',user.showProfile);
 router.get('/checkUserName',user.checkUserName);
 
 
+router.post('/updateComment',user.UpdateComment);
+router.post('/createComment',user.CreateComment);
+router.get('/deleteComment',user.DeleteComment);
+router.get('/getComments',user.ShowComment);
+
+
+
 router.get('/notifcation',notify.selectAllNotify)
 router.get('/notifcationDetails',notify.selectSpecificNotify)
 
