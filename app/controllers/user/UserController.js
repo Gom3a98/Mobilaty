@@ -1,5 +1,5 @@
 var Student = require("../../model/User");
-
+var Comment = require("../../model/Comment")
 var formidable = require('formidable');
 //http://localhost:3000/startExam/admin/9/1
 const fs = require('fs-extra');
@@ -69,4 +69,28 @@ module.exports = {
 				res.send('0');
 		})
 	},
+	CreateComment:function(req,res,next){
+		Comment.CreateComment(req.body,(err,result)=>{
+			if(err)res.send(err);
+			else res.send('1');
+		})
+	},
+	UpdateComment:function(req,res,next){
+		Comment.UpdateComment(req.body,(err,result)=>{
+			if(err)res.send(err);
+			else res.send('1');
+		})
+	},
+	DeleteComment:function(req,res,next){
+		Comment.DeleteComment(req.param("comment_id"),(err,result)=>{
+			if(err)res.send(err);
+			else res.send('1');
+		})
+	},
+	ShowComment:function(req,res,next){
+		Comment.ShowComment(req.param("post_id"),(err,result)=>{
+			if(err)res.send(err);
+			else res.send(result);
+		})
+	}
 };
