@@ -7,7 +7,7 @@ class User:
 
     def __init__(self):
         self.conn = connection()
-        self.cursor = self.conn.connection.cursor()
+        self.cursor = self.conn.connection.cursor(dictionary=True)
 
     def LogInGet(self, params):
         if 'username' in session:
@@ -21,10 +21,10 @@ class User:
         val = "'{}'".format(params['username'])
         # val = params['username']
         self.cursor.execute('SELECT * FROM mobilaty.user WHERE name =' + val + "and password = "+params['password'])
-        row = self.cursor.fetchall()
-        if len(row) <= 0:
-            return "There is no user with this info."
-        return "LogIN Done."
+        row = self.cursor.fetchone()
+        if len(row) == 0:
+            return 404
+        return row
 
     def SignupGet(self, params):
         if 'username' in session:
@@ -53,7 +53,7 @@ class User:
     def createuser(self, params):
         self.cursor.execute("INSERT INTO mobilaty.user" +
                             " (name, email,password,age,address,type)" +
-                            " VALUES ('" + params['name'] + "','" + params['email'] + "','" + params['password']
+                            " VALUES ('" + params['username'] + "','" + params['email'] + "','" + params['password']
                             + "','" + params['age'] + "','" + params['address'] + "','" + params['type'] + "')")
 
         self.conn.connection.commit()
@@ -65,7 +65,9 @@ class User:
     def finduserByUserName(self, params):
         val = "'{}'".format(params['username'])
         self.cursor.execute('SELECT * FROM  mobilaty.user where name =' + val)
-        row = self.cursor.fetchall()
+
+        row = self.cursor.fetchone()
+
         return row
 
     def hashfun(self, password):

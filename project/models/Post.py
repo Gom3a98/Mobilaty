@@ -6,7 +6,7 @@ class Post:
 
     def __init__(self):
         self.conn = connection()
-        self.cursor = self.conn.connection.cursor()
+        self.cursor = self.conn.connection.cursor(dictionary=True)
 
     def add_post(self, params):
         self.cursor.execute("INSERT INTO mobilaty.post" +

@@ -6,7 +6,7 @@ class Store:
 
     def __init__(self):
         self.conn = connection()
-        self.cursor = self.conn.connection.cursor()
+        self.cursor = self.conn.connection.cursor(dictionary=True   )
 
     def add_store(self, params):
         self.cursor.execute("INSERT INTO mobilaty.store" +

@@ -58,5 +58,4 @@ def remove_user():
 
 @app.route('/finduserByUserName', methods=['GET'])
 def find_user_By_User_Name():
-    print('get_All_Users', file=sys.stderr)
     return jsonify(User.finduserByUserName(request.json))
