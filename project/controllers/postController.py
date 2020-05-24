@@ -8,17 +8,19 @@ from project.models.Post import Post
 post = Post()
 
 
-@app.route('/post', methods=['GET'])
+@app.route('/post', methods=['POST'])
 def index_1():
     print('show post', file=sys.stderr)
-    response = jsonify(post.show_post(request.json))
+    data = request.get_json()
+    response = jsonify(post.show_post(data[0]))
     response.status_code = 200
     return response
 
 
-@app.route('/post/findByStoreId', methods=['GET'])
+@app.route('/post/findByStoreId', methods=['POST'])
 def findByStoreId():
-    response = jsonify(post.findByStoreId(request.json))
+    data = request.get_json()
+    response = jsonify(post.findByStoreId(data[0]))
     response.status_code = 200
     return response
 
@@ -31,22 +33,25 @@ def index_2():
     return response
 
 
-@app.route('/post/create', methods=['GET'])
+@app.route('/post/create', methods=['POST'])
 def Create_post():
-    post.add_post(request.json)
+    data = request.get_json()
+    post.add_post(data[0])
     print('Create post!', file=sys.stderr)
     return jsonify('done')
 
 
 @app.route('/post/update', methods=['POST'])
 def update_post():
-    post.update_post(request.json)
+    data = request.get_json()
+    post.update_post(data[0])
     print('Update post!', file=sys.stderr)
     return jsonify('done')
 
 
-@app.route('/post/delete', methods=['GET'])
+@app.route('/post/delete', methods=['POST'])
 def Delete_post():
-    post.delete_post(request.json)
+    data = request.get_json()
+    post.delete_post(data[0])
     print('Delete post!', file=sys.stderr)
     return jsonify('done')

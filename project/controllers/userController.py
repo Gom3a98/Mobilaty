@@ -10,52 +10,59 @@ User = User()
 
 # comment=Comment()
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def Loginget():
     print('LoginGet', file=sys.stderr)
-    print(request.json)
-    Result = User.LogInGet(request.json)
+    data = request.get_json()
+    Result = User.LogInGet(data[0])
     return jsonify(Result)
 
 
 @app.route('/login', methods=['POST'])
 def LogInpost():
     print('LoginPost', file=sys.stderr)
-    return jsonify(User.LogInPost(request.json))
+    data = request.get_json()
+    return jsonify(User.LogInPost(data[0]))
 
 
-@app.route('/signup', methods=['GET'])
+@app.route('/signup', methods=['POST'])
 def Signupget():
     print('SignupGET', file=sys.stderr)
-    return jsonify(User.SignupGet(request.json))
+    data = request.get_json()
+    return jsonify(User.SignupGet(data[0]))
 
 
 @app.route('/signup', methods=['POST'])
 def Signuppost():
     print('SignupPost', file=sys.stderr)
-    return jsonify(User.SignupPost(request.json))
+    data = request.get_json()
+    return jsonify(User.SignupPost(data[0]))
 
 
-@app.route('/getuserbyid', methods=['GET'])
+@app.route('/getuserbyid', methods=['POST'])
 def get_User_By_Id():
     print('get_All_Users', file=sys.stderr)
-    return jsonify(User.getUserById(request.json))
+    data = request.get_json()
+    return jsonify(User.getUserById(data[0]))
 
 
 @app.route('/createuser', methods=['POST'])
 def create_user():
     print('createuser', file=sys.stderr)
-    User.createuser(request.json)
+    data = request.get_json()
+    User.createuser(data[0])
     return jsonify("Done!")
 
 
 @app.route('/removeuser', methods=['POST'])
 def remove_user():
     print('removeuser', file=sys.stderr)
-    User.removeuser(request.json)
+    data = request.get_json()
+    User.removeuser(data[0])
     return jsonify("Done!")
 
 
-@app.route('/finduserByUserName', methods=['GET'])
+@app.route('/finduserByUserName', methods=['POST'])
 def find_user_By_User_Name():
-    return jsonify(User.finduserByUserName(request.json))
+    data = request.get_json()
+    return jsonify(User.finduserByUserName(data[0]))

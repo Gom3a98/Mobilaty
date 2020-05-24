@@ -25,15 +25,20 @@ print(pipe.score(x_test, y_test)) #0.965
 
 joblib.dump(pipe, 'predictPrice.pkl')
 '''
+from __future__ import print_function
 from project import app
 from flask import render_template, redirect, url_for, jsonify, request
 
-
+from project.models.mobile import Mobile
+import sys
 from sklearn.externals import joblib
 import pandas as pd
 import numpy as np
+
+mobile = Mobile()
+
 @app.route('/predictPrice', methods=['GET'])
-def Create_store():
+def Create_Store():
     arr= np.zeros(21)
     arr[0]=int(request.args.get('battery_power'))
     #arr[1]=int(request.args.get('blue'))
@@ -59,3 +64,51 @@ def Create_store():
     pipe = joblib.load('../public/predictPrice.pkl')
     pred = pd.Series(pipe.predict([arr]))
     return jsonify(pred)
+
+@app.route('/mobile', methods=['POST'])
+def showMobile():
+    print('show mobile', file=sys.stderr)
+    data = request.get_json()
+    response = jsonify(mobile.show_mobile(data[0]))
+    response.status_code = 200
+    return response
+
+
+@app.route('/mobile/findByMobileId', methods=['POST'])
+def findByMobileId():
+    data = request.get_json()
+    response = jsonify(mobile.findByMobileId(data[0]))
+    response.status_code = 200
+    return response
+
+
+@app.route('/Allmobile', methods=['GET'])
+def showAllmobile():
+    print('show mobiles', file=sys.stderr)
+    response = jsonify(mobile.show_AllMobile())
+    response.status_code = 200
+    return response
+
+
+@app.route('/mobile/create', methods=['POST'])
+def Create_mobile():
+    data = request.get_json()
+    mobile.add_mobile(data[0])
+    print('Create mobile!', file=sys.stderr)
+    return jsonify('done')
+
+
+@app.route('/mobile/update', methods=['POST'])
+def Update_mobile():
+    data = request.get_json()
+    mobile.update_mobile(data[0])
+    print('Update mobile!', file=sys.stderr)
+    return jsonify('done')
+
+
+@app.route('/mobile/delete', methods=['POST'])
+def Delete_mobile():
+    data = request.get_json()
+    mobile.delete_mobile(data[0])
+    print('Delete mobile!', file=sys.stderr)
+    return jsonify('done')

@@ -9,10 +9,11 @@ import pandas as pd
 store = Store()
 
 
-@app.route('/store', methods=['GET'])
+@app.route('/store', methods=['POST'])
 def index_store():
     print('show store', file=sys.stderr)
-    response = jsonify(store.show_store(request.json))
+    data = request.get_json()
+    response = jsonify(store.show_store(data[0]))
     response.status_code = 200
     return response
 
@@ -51,22 +52,25 @@ def recommendStore():
     return jsonify(response)
 
 
-@app.route('/store/create', methods=['GET'])
+@app.route('/store/create', methods=['POST'])
 def Create_store():
-    store.add_store(request.json)
+    data = request.get_json()
+    store.add_store(data[0])
     print('Create store!', file=sys.stderr)
     return jsonify('done')
 
 
 @app.route('/store/update', methods=['POST'])
 def update_store():
-    store.update_store(request.json)
+    data = request.get_json()
+    store.update_store(data[0])
     print('Update store!', file=sys.stderr)
     return jsonify('done')
 
 
-@app.route('/store/delete', methods=['GET'])
+@app.route('/store/delete', methods=['POST'])
 def Delete_store():
-    store.delete_store(request.json)
+    data = request.get_json()
+    store.delete_store(data[0])
     print('Delete store!', file=sys.stderr)
     return jsonify('done')
