@@ -34,8 +34,13 @@ import sys
 from sklearn.externals import joblib
 import pandas as pd
 import numpy as np
+import pickle
+import os
 
 mobile = Mobile()
+
+path = os.getcwd()
+parent = os.path.dirname(path) 
 
 @app.route('/predictPrice', methods=['GET'])
 def Create_Store():
@@ -61,9 +66,27 @@ def Create_Store():
     arr[18]=int(request.args.get('touch_screen'))
     arr[19]=int(request.args.get('wifi'))
 
-    pipe = joblib.load('../public/predictPrice.pkl')
+    pipe = joblib.load(os.path.join(parent,'Mobilaty\\project\\public\\predictPrice.pkl'))
     pred = pd.Series(pipe.predict([arr]))
     return jsonify(pred)
+
+@app.route('/croped_image', methods=['POST'])
+def crop_image():
+    data = request.get_json()
+    return jsonify(mobile.Crop_image(data[0]))
+
+@app.route('/croped_video', methods=['POST'])
+def crop_video():
+    data = request.get_json()
+    return jsonify(mobile.Crop_video(data[0]))
+
+@app.route('/recommendMobile', methods=['POST'])
+def Recommend_Mobile():
+    cosine_sim = pickle.load(open(os.path.join(parent,'Mobilaty\\project\\public\\RecoomendMobile.sav'), 'rb'))
+    data = request.get_json()
+    Recommended=mobile.recommendations(data[0],cosine_sim)
+    return Recommended
+
 
 @app.route('/mobile', methods=['POST'])
 def showMobile():
