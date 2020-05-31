@@ -48,6 +48,11 @@ def crop_image():
     data = request.get_json()
     return jsonify(mobile.Crop_image(data[0]))
 
+@app.route('/classifiy_phone', methods=['POST'])
+def Classifiy_phone():
+    data = request.get_json()
+    return mobile.Mobile_Classifier(data[0])
+
 @app.route('/croped_video', methods=['POST'])
 def crop_video():
     data = request.get_json()

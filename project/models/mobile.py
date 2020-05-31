@@ -9,6 +9,9 @@ from imageai.Detection import VideoObjectDetection
 import requests
 import cv2
 import shutil
+import numpy as np
+from keras.models import load_model
+import keras_metrics
 
 path = os.getcwd()
 parent = os.path.dirname(path) 
@@ -209,3 +212,26 @@ class Mobile:
             result.append(dataset.iloc[recommended_movies[ii]].values)
         result = pd.Series(result).to_json(orient='values')
         return result
+
+    def Mobile_Classifier(self,params):
+        model = load_model(os.path.join(Base_Video_path,'model.h5'),custom_objects={"binary_precision": keras_metrics.precision(),
+        "binary_recall":keras_metrics.recall(),"binary_f1_score":keras_metrics.f1_score()})
+        # summarize model.
+        model.summary()
+        url = ""
+        if 'url' in params.keys():
+            im = self.getimage(params)
+        elif 'photo_name'in params.keys():
+            im = cv2.imread(os.path.join(Base_Video_path,params['photo_name']))
+        IMG_SIZE = 100
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)                
+        im = cv2.resize(im, (IMG_SIZE, IMG_SIZE))
+        im =np.array(im).reshape(-1, IMG_SIZE, IMG_SIZE, 3)
+        predictions = model.predict([im])
+        #print("lllllllllllllllllllll:"+str(type(predictions))+" "+str(predictions.shape))
+        predictions = pd.Series([predictions]).to_json()
+        #print("lllllllllllllllllllll:"+str(type(predictions))+" "+str(predictions.shape))
+        return predictions
+        #score = loaded_model.evaluate(X, Y, verbose=0)
+        #print("%s: %.2f%%" % (loaded_model.metrics_names[1], score[1]*100))
+
