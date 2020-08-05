@@ -55,3 +55,12 @@ def Delete_post():
     post.delete_post(data[0])
     print('Delete post!', file=sys.stderr)
     return jsonify('done')
+
+@app.route('/post/count_comment', methods=['POST'])
+def Count_comment():
+    data = request.get_json()
+    print('count comment post!', file=sys.stderr)
+    response = jsonify(post.count_comment(data[0]))
+    response.status_code = 200
+    return response
+

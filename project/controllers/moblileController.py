@@ -14,20 +14,21 @@ mobile = Mobile()
 
 path = os.getcwd()
 parent = os.path.dirname(path) 
-
+print(parent)
 @app.route('/predictPrice', methods=['GET'])
-def Create_Store():
+def PredictPrice():
     arr= np.zeros(21)
-    arr[0]=int(request.args.get('battery_power'))
+    arr[0]=(request.args.get('battery_power'))
+    """
     #arr[1]=int(request.args.get('blue'))
     #arr[2]=int(request.args.get('clock_speed'))
     #arr[3]=int(request.args.get('dual_sim'))    
     #arr[4]=int(request.args.get('fc'))
-    arr[5]=int(request.args.get('four_g'))
-    arr[6]=int(request.args.get('int_memory'))
+    # arr[5]=int(request.args.get('four_g'))
+    # arr[6]=int(request.args.get('int_memory'))
     #arr[7]=int(request.args.get('m_dep'))
-    arr[8]=int(request.args.get('mobile_wt'))
-    arr[9]=int(request.args.get('n_cores'))
+    # arr[8]=int(request.args.get('mobile_wt'))
+    # arr[9]=int(request.args.get('n_cores'))
     #arr[10]=int(request.args.get('pc'))
     arr[11]=int(request.args.get('px_height'))
     arr[12]=int(request.args.get('px_width'))
@@ -38,7 +39,7 @@ def Create_Store():
     arr[17]=int(request.args.get('three_g'))
     arr[18]=int(request.args.get('touch_screen'))
     arr[19]=int(request.args.get('wifi'))
-
+    """
     pipe = joblib.load(os.path.join(parent,'Mobilaty\\project\\public\\predictPrice.pkl'))
     pred = pd.Series(pipe.predict([arr]))
     return jsonify(pred)

@@ -40,3 +40,7 @@ class Post:
         self.cursor.execute('SELECT * FROM mobilaty.post WHERE store_id = ' + params['store_id'])
         row = self.cursor.fetchall()
         return row
+    def count_comment(self, params):
+        self.cursor.execute('select post.* ,count(comment_id) from post join comment  on post.post_id  = comment.post_id where post.post_id= ' + params['post_id'])
+        row = self.cursor.fetchall()
+        return row
